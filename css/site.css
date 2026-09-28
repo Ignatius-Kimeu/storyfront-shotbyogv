@@ -40,21 +40,63 @@ button{font:inherit;color:inherit}
 .btn-ghost:hover{border-color:#fff;background:rgba(255,255,255,.06)}
 .btn-sm{padding:10px 18px;font-size:11px}
 .btn svg{width:16px;height:16px;flex:none}
-.menu-btn{display:none;background:none;border:1px solid rgba(255,255,255,.4);border-radius:999px;padding:10px 16px;font-size:11px;letter-spacing:.16em;text-transform:uppercase;cursor:pointer}
+.menu-btn{display:none;align-items:center;gap:10px;background:rgba(0,0,0,.35);border:1px solid rgba(255,255,255,.35);border-radius:999px;padding:9px 12px 9px 16px;font-size:11px;font-weight:600;letter-spacing:.18em;text-transform:uppercase;cursor:pointer;transition:border-color .3s,background .3s}
+.menu-btn:hover{border-color:#fff}
+.mb-icon{position:relative;width:18px;height:10px;display:inline-block}
+.mb-icon i{position:absolute;left:0;height:1.5px;background:currentColor;border-radius:2px;transition:transform .45s var(--ease),width .45s var(--ease),top .45s var(--ease)}
+.mb-icon i:first-child{top:0;width:18px}.mb-icon i:last-child{top:8px;width:11px;left:auto;right:0}
+.menu-btn:hover .mb-icon i:last-child{width:18px}
+.mb-icon.x i{top:4px!important;width:18px!important;left:0;right:auto}
+.mb-icon.x i:first-child{transform:rotate(45deg)}.mb-icon.x i:last-child{transform:rotate(-45deg)}
 @media (max-width:900px){
   .nav{display:none}
-  .menu-btn{display:inline-block}
+  .menu-btn{display:inline-flex}
   .brand img{height:32px}
   .site-header .book{display:none}
 }
-.mobile-panel{position:fixed;inset:0;z-index:60;background:#000;display:flex;flex-direction:column;padding:18px var(--gutter) 32px;transform:translateY(-100%);transition:transform .5s var(--ease);visibility:hidden}
-.mobile-panel.open{transform:none;visibility:visible}
-.mobile-panel .top{display:flex;justify-content:space-between;align-items:center}
-.mobile-panel .top img{height:32px}
-.mobile-panel nav{display:flex;flex-direction:column;gap:6px;margin-top:48px}
-.mobile-panel nav a{font-family:var(--serif);font-size:40px;text-decoration:none;line-height:1.25}
-.mobile-panel nav a[aria-current=page]{color:var(--accent-text);font-style:italic}
-.mobile-panel .ctas{margin-top:auto;display:flex;flex-direction:column;gap:10px}
+/* ---------- mobile menu: opens like an iris from the Menu button ---------- */
+.mobile-panel{position:fixed;inset:0;z-index:60;background:#030306;display:flex;flex-direction:column;padding:14px var(--gutter) max(22px,env(safe-area-inset-bottom));overflow-y:auto;overscroll-behavior:contain;
+  clip-path:circle(0px at var(--ox,90%) var(--oy,34px));transition:clip-path .55s cubic-bezier(.7,0,.25,1),visibility 0s .55s;visibility:hidden}
+.mobile-panel[hidden]{display:none}
+.mobile-panel.open{clip-path:circle(150% at var(--ox,90%) var(--oy,34px));visibility:visible;transition:clip-path .8s cubic-bezier(.65,0,.15,1),visibility 0s}
+.mp-glow{position:absolute;inset:0;pointer-events:none;z-index:-1;
+  background:radial-gradient(70% 45% at 100% 100%,rgba(61,91,255,.28),transparent 70%),radial-gradient(60% 35% at 0% 0%,rgba(61,91,255,.10),transparent 70%)}
+.mp-top{display:flex;justify-content:space-between;align-items:center;min-height:48px}
+.mp-logo img{height:30px;width:auto}
+.mp-close{display:inline-flex}
+.mp-meta{display:flex;align-items:center;gap:8px;margin-top:clamp(22px,5vh,40px);font:500 10px var(--mono);letter-spacing:.22em;text-transform:uppercase;color:var(--muted);opacity:0;transition:opacity .4s}
+.mp-rec{width:6px;height:6px;border-radius:50%;background:#ff3b30;box-shadow:0 0 10px #ff3b30;animation:blink 1.2s steps(1) infinite}
+.mp-nav{display:flex;flex-direction:column;margin-top:14px;counter-reset:m}
+.mi{--d:calc(.28s + var(--i) * .065s);position:relative;display:grid;grid-template-columns:34px 1fr auto;align-items:center;gap:12px;padding:15px 2px;text-decoration:none;overflow:hidden}
+.mi:before{content:"";position:absolute;left:0;right:0;bottom:0;height:1px;background:var(--line);transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease) var(--d)}
+.mi:first-child:after{content:"";position:absolute;left:0;right:0;top:0;height:1px;background:var(--line);transform:scaleX(0);transform-origin:left;transition:transform .7s var(--ease) .24s}
+.mi-n{font:500 11px var(--mono);color:var(--muted);letter-spacing:.06em;opacity:0;transition:opacity .5s var(--d)}
+.mi-t{display:flex;flex-direction:column;gap:2px;min-width:0;transform:translateY(120%);opacity:0;transition:transform .7s var(--ease) var(--d),opacity .5s var(--d)}
+.mi-l{font-family:var(--serif);font-size:clamp(24px,7vw,30px);line-height:1.1;transition:color .3s,transform .4s var(--ease)}
+.mi-d{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted)}
+.mi-ph{width:46px;height:46px;border-radius:50%;overflow:hidden;border:1px solid rgba(255,255,255,.22);box-shadow:0 0 0 3px rgba(0,0,0,.6),0 0 0 4px rgba(255,255,255,.06);
+  transform:scale(.4) rotate(-60deg);opacity:0;transition:transform .8s var(--ease) calc(var(--d) + .08s),opacity .5s calc(var(--d) + .08s),border-color .3s}
+.mi-ph img{width:100%;height:100%;object-fit:cover}
+.mi:hover .mi-l,.mi:focus-visible .mi-l{transform:translateX(6px)}
+.mi:hover .mi-ph{border-color:var(--accent-text)}
+.mi[aria-current=page] .mi-l{color:var(--accent-text);font-style:italic}
+.mi[aria-current=page] .mi-n{color:var(--accent-text)}
+.mi[aria-current=page] .mi-ph{border-color:var(--accent)}
+.mp-foot{margin-top:auto;padding-top:26px;opacity:0;transform:translateY(16px);transition:opacity .6s .62s,transform .7s var(--ease) .62s}
+.mp-ctas{display:grid;grid-template-columns:1.4fr 1fr;gap:10px}
+.mp-ctas .btn{padding:14px 12px}
+.mp-social{display:flex;justify-content:center;gap:22px;margin-top:18px}
+.mp-social a{font-size:10px;letter-spacing:.2em;text-transform:uppercase;color:var(--muted);text-decoration:none}
+.mp-social a:hover{color:#fff}
+.mobile-panel.open .mp-meta{opacity:1;transition-delay:.2s}
+.mobile-panel.open .mi:before,.mobile-panel.open .mi:first-child:after{transform:scaleX(1)}
+.mobile-panel.open .mi-n{opacity:1}
+.mobile-panel.open .mi-t{transform:none;opacity:1}
+.mobile-panel.open .mi-ph{transform:none;opacity:1}
+.mobile-panel.open .mp-foot{opacity:1;transform:none}
+/* closing: everything leaves together, quickly */
+.mobile-panel:not(.open) *{transition-delay:0s!important;transition-duration:.2s!important}
+@media (max-height:640px){.mi{padding:10px 2px}.mi-ph{width:38px;height:38px}.mp-meta{margin-top:14px}}
 
 /* ---------- type ---------- */
 .eyebrow{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--muted)}

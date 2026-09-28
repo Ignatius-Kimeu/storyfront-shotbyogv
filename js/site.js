@@ -27,13 +27,38 @@
 
   /* ---- mobile menu ---- */
   const panel = document.querySelector('.mobile-panel');
-  document.querySelectorAll('[data-menu]').forEach(b => b.addEventListener('click', () => {
-    const open = b.dataset.menu === 'open';
-    panel.classList.toggle('open', open);
-    document.body.style.overflow = open ? 'hidden' : '';
-    document.querySelector('.menu-btn').setAttribute('aria-expanded', open);
-    if (open) panel.querySelector('[data-menu="close"]').focus();
-  }));
+  const menuBtn = document.querySelector('.menu-btn[data-menu="open"]');
+  let closeTimer;
+  const setMenu = open => {
+    clearTimeout(closeTimer);
+    if (open) {
+      // the iris opens from wherever the Menu button sits
+      const r = menuBtn.getBoundingClientRect();
+      panel.style.setProperty('--ox', (r.left + r.width / 2) + 'px');
+      panel.style.setProperty('--oy', (r.top + r.height / 2) + 'px');
+      panel.hidden = false; panel.offsetWidth; // commit the closed state before animating
+      panel.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => panel.querySelector('[data-menu="close"]').focus({ preventScroll: true }), 60);
+    } else {
+      panel.classList.remove('open');
+      document.body.style.overflow = '';
+      closeTimer = setTimeout(() => { panel.hidden = true; }, reduce ? 0 : 560);
+      menuBtn.focus({ preventScroll: true });
+    }
+    menuBtn.setAttribute('aria-expanded', open);
+  };
+  document.querySelectorAll('[data-menu]').forEach(b => b.addEventListener('click', () => setMenu(b.dataset.menu === 'open')));
+  panel.querySelectorAll('a').forEach(a => a.addEventListener('click', () => { if (a.getAttribute('aria-current') === 'page') setMenu(false); }));
+  addEventListener('keydown', e => {
+    if (!panel.classList.contains('open')) return;
+    if (e.key === 'Escape') setMenu(false);
+    if (e.key === 'Tab') { // keep focus inside the open menu
+      const f = [...panel.querySelectorAll('a,button')], first = f[0], last = f[f.length - 1];
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    }
+  });
 
   /* ---- scroll reveal ---- */
   const rv = document.querySelectorAll('.rv');
