@@ -117,6 +117,9 @@ button{font:inherit;color:inherit}
 .star .who span{display:block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:#c9cee0;margin-top:6px}
 @media (max-width:1000px){.stars{grid-template-columns:repeat(3,1fr)}}
 @media (max-width:600px){.stars{grid-template-columns:repeat(2,1fr)}.star .who b{font-size:18px}}
+.star .fans{position:absolute;top:12px;left:12px;z-index:1;display:inline-flex;align-items:baseline;gap:5px;padding:6px 11px;border-radius:999px;background:rgba(0,0,0,.72);border:1px solid rgba(107,123,255,.55);font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#dfe3f2}
+.star .fans b{font-family:var(--serif);font-weight:500;font-size:15px;letter-spacing:0;text-transform:none;color:#fff}
+@media (max-width:600px){.star .fans{top:8px;left:8px;padding:5px 9px;font-size:9px}.star .fans b{font-size:13px}}
 
 /* ---------- photo grids ---------- */
 .grid-feature{display:grid;grid-template-columns:repeat(12,1fr);gap:14px}
@@ -133,9 +136,9 @@ button{font:inherit;color:inherit}
 .ph:hover img{transform:scale(1.04)}
 .ph .tag{position:absolute;left:12px;bottom:12px;font-size:10px;letter-spacing:.2em;text-transform:uppercase;background:rgba(0,0,0,.72);padding:6px 10px;border-radius:999px;opacity:0;transform:translateY(6px);transition:.35s var(--ease)}
 .ph:hover .tag,.ph:focus-visible .tag{opacity:1;transform:none}
-.masonry{columns:4 260px;column-gap:14px}
-.masonry .ph{margin-bottom:14px;break-inside:avoid}
-.masonry .ph img{aspect-ratio:auto;height:auto}
+.grid-2{display:grid;grid-template-columns:1fr 1fr;gap:14px;max-width:1000px;margin:0 auto}
+.grid-2 .ph img{aspect-ratio:4/5}
+@media (max-width:600px){.grid-2{gap:8px}.grid-2 .ph{border-radius:10px}}
 .tilt{transform:perspective(900px) rotateX(var(--rx,0deg));transition:transform .2s linear}
 
 /* ---------- services ---------- */
@@ -159,9 +162,22 @@ button{font:inherit;color:inherit}
 .stack>*+*{margin-top:18px}
 
 /* ---------- viewfinder video player (Video A) ---------- */
-.films{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
-@media (max-width:900px){.films{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:560px){.films{grid-template-columns:1fr;max-width:420px;margin:0 auto}}
+.films{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;max-width:820px;margin:0 auto}
+.films>.film{grid-column:span 2}
+.films>.film:last-child:nth-child(odd){grid-column:2 / span 2}   /* odd one out sits centred under the pair */
+@media (max-width:560px){
+  .films{gap:10px}
+  .films .vf .hud{inset:8px;font-size:8px}
+  .films .vf .hud .tr{display:none}
+  .films .vf .corner{width:14px;height:14px}
+  .films .vf .c1,.films .vf .c2{top:18px}.films .vf .c3,.films .vf .c4{bottom:60px}
+  .films .vf .af{width:44px;height:34px}
+  .films .vf .cap{left:10px;right:10px;bottom:80px}.films .vf .cap small{font-size:8px;letter-spacing:.16em}.films .vf .cap b{font-size:16px}
+  .films .vf .rec{width:44px;height:44px;bottom:14px;border-width:2px}.films .vf .rec:before{width:32px;height:32px}
+  .films .vf:hover .rec:before{width:28px;height:28px}.films .vf.playing .rec:before{width:16px;height:16px;border-radius:4px}
+  .films .vf .ctl{width:32px;height:32px;bottom:20px}.films .vf .snd{left:8px}.films .vf .fs{right:8px}.films .vf .ctl svg{width:14px;height:14px}
+  .film h3{font-size:18px;margin-top:10px}.film p{font-size:12.5px}
+}
 .film h3{margin-top:16px}
 .film p{color:var(--muted);font-size:14px;margin-top:6px}
 .vf{position:relative;aspect-ratio:9/16;border-radius:var(--r);overflow:hidden;background:#000;isolation:isolate;cursor:pointer;user-select:none}
@@ -212,7 +228,7 @@ button{font:inherit;color:inherit}
 .c-row b{font-family:var(--serif);font-weight:400;font-size:clamp(19px,2.2vw,26px);overflow-wrap:anywhere;min-width:0}
 a.c-row:hover b{color:var(--accent-text)}
 .map{border-radius:var(--r);overflow:hidden;border:1px solid var(--line);aspect-ratio:4/3;background:var(--surface)}
-.map iframe{width:100%;height:100%;border:0;filter:grayscale(1) invert(.92) contrast(.9)}
+.map iframe{width:100%;height:100%;border:0}
 .socials{display:flex;flex-wrap:wrap;gap:10px}
 .socials a{font-size:12px;letter-spacing:.12em;text-transform:uppercase;text-decoration:none;border:1px solid var(--line);border-radius:999px;padding:10px 16px}
 .socials a:hover{border-color:var(--accent-text)}
